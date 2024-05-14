@@ -1,0 +1,67 @@
+<section class="todo-list-wrapper">
+    <form (ngSubmit)="saveTodo()">
+      <h1 class="title">TODO APP</h1>
+      <div class="new-todo">
+        <input
+          type="text"
+          placeholder="Ingrese una nueva tarea"
+          [(ngModel)]="newTodoTitle"
+          name="title"
+        />
+        <button type="submit">
+          <i class="fa-solid fa-plus"></i>
+        </button>
+      </div>
+    </form>
+  
+    <div class="filters">
+      <button (click)="filterTodos('all')">Todos</button>
+      <button (click)="filterTodos('active')">Activos</button>
+      <button (click)="filterTodos('completed')">Completados</button>
+    </div>
+  
+    <div class="extra-actions">
+      <button (click)="toggleAllTodos()">Marcar todos</button>
+      <button (click)="clearCompletedTodos()">Limpiar todos</button>
+    </div>
+  
+    <div class="todo-count">
+      <p>Total: {{ todos.length }}</p>
+      <p>Completados: {{ completedCount }}</p>
+    </div>
+  
+    <ul class="todo-list">
+      @for (todo of filteredTodos; track todo) {
+      <li>
+        @if (todo.isEditing) {
+        <div class="todo-editing">
+          <input type="text" placeholder="Edit Task" [(ngModel)]="todo.title" />
+          <button (click)="saveEditedTodo(todo.id)">
+            <i class="fa-solid fa-floppy-disk"></i>
+          </button>
+        </div>
+        } @if (!todo.isEditing) {
+        <div class="todo">
+          <div class="todo__left">
+            <input
+              type="checkbox"
+              [checked]="todo.completed"
+              (change)="toggleTodoCompletion(todo.id)"
+            />
+            <label>{{ todo.title }}</label>
+          </div>
+          <div class="todo__right">
+            <button class="edit" (click)="editTodo(todo.id)">
+              <i class="fa-solid fa-pen-to-square"></i>
+            </button>
+            <button class="delete" (click)="deleteTodo(todo.id)">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </div>
+        </div>
+        }
+      </li>
+      }
+    </ul>
+  </section>
+  
